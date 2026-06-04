@@ -39,3 +39,4 @@ class WebhookEvent(db.Model):
     payload = db.Column(db.JSON, nullable=False)
     status = db.Column(db.String(20), default='pending')
     correlation_id = db.Column(db.String(100), nullable=True)
+    workspace_id = db.Column(db.Integer, db.ForeignKey('workspace.id'), nullable=False)
