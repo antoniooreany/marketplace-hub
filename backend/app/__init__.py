@@ -17,10 +17,11 @@ def create_app(config_class='app.config.Config'):
     # Register blueprints
     from .api.v1 import api_v1_bp
     app.register_blueprint(api_v1_bp, url_prefix='/api/v1')
+    from .api.v1.products import products_bp
+    app.register_blueprint(products_bp, url_prefix='/api/v1/products')
 
     # Placeholder for other modules
     # app.register_blueprint(auth_bp, url_prefix='/api/v1/auth')
-    # app.register_blueprint(products_bp, url_prefix='/api/v1/products')
     # app.register_blueprint(integrations_bp, url_prefix='/api/v1/integrations')
     # app.register_blueprint(sync_jobs_bp, url_prefix='/api/v1/sync-jobs')
     # app.register_blueprint(subscriptions_bp, url_prefix='/api/v1/subscriptions')
