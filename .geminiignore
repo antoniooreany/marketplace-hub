@@ -1,0 +1,58 @@
+@'
+# Dependencies
+node_modules/
+.pnpm-store/
+.npm/
+.yarn/
+.yarn-cache/
+
+# Python environments and caches
+.venv/
+venv/
+env/
+ENV/
+backend/.venv/
+__pycache__/
+*.py[cod]
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+
+# Build outputs
+dist/
+build/
+out/
+coverage/
+htmlcov/
+.vite/
+*.tsbuildinfo
+
+# Logs
+*.log
+logs/
+
+# Secrets and local env files
+.env
+.env.*
+!.env.example
+!.env.sample
+!.env.template
+
+# Editor and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Git and temp
+.git/
+.cache/
+tmp/
+temp/
+
+# Local databases and uploads
+*.sqlite
+*.sqlite3
+instance/
+uploads/
+'@ | Set-Content .geminiignore
