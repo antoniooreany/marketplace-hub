@@ -19,6 +19,8 @@ def create_app(config_class='app.config.Config'):
     app.register_blueprint(api_v1_bp, url_prefix='/api/v1')
     from .api.v1.products import products_bp
     app.register_blueprint(products_bp, url_prefix='/api/v1/products')
+    from .api.v1.core import core_bp
+    app.register_blueprint(core_bp, url_prefix='/api/v1')
 
     # Placeholder for other modules
     # app.register_blueprint(auth_bp, url_prefix='/api/v1/auth')
