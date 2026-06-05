@@ -71,3 +71,18 @@ class WebhookEvent(db.Model):
     status: Mapped[str] = mapped_column(String(length=20), default='pending')
     correlation_id: Mapped[str | None] = mapped_column(String(length=100), nullable=True)
     workspace_id: Mapped[int] = mapped_column(ForeignKey(column='workspace.id'), nullable=False)
+
+    def __init__(
+        self,
+        *,
+        event_type: str,
+        payload: dict[str, object],
+        workspace_id: int,
+        correlation_id: str | None = None,
+        status: str = 'pending',
+    ) -> None:
+        self.event_type = event_type
+        self.payload = payload
+        self.workspace_id = workspace_id
+        self.correlation_id = correlation_id
+        self.status = status
