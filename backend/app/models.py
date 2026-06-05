@@ -1,7 +1,7 @@
 from datetime import datetime
-from typing import TYPE_CHECKING
+from typing import Any
 
-from sqlalchemy import Float, ForeignKey, String
+from sqlalchemy import JSON, Float, ForeignKey, String, func
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.extensions import db
@@ -54,7 +54,7 @@ class SyncJob(db.Model):
     workspace_id: Mapped[int] = mapped_column(ForeignKey('workspace.id'), nullable=False)
     last_error: Mapped[str | None] = mapped_column(String(500), nullable=True)
     correlation_id: Mapped[str | None] = mapped_column(String(100), nullable=True)
-    updated_at: Mapped[datetime] = mapped_column(default=db.func.now(), onupdate=db.func.now())
+    updated_at: Mapped[datetime] = mapped_column(default=func.now(), onupdate=func.now())
 
 class Subscription(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -64,7 +64,7 @@ class Subscription(db.Model):
 class WebhookEvent(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     event_type: Mapped[str] = mapped_column(String(50), nullable=False)
-    payload: Mapped[dict] = mapped_column(db.JSON, nullable=False)
+    payload: Mapped[dict[str, Any]] = mapped_column(JSON, nullable=False)
     status: Mapped[str] = mapped_column(String(20), default='pending')
     correlation_id: Mapped[str | None] = mapped_column(String(100), nullable=True)
     workspace_id: Mapped[int] = mapped_column(ForeignKey('workspace.id'), nullable=False)
