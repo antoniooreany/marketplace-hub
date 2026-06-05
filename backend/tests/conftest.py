@@ -1,4 +1,4 @@
-from typing import Generator
+from collections.abc import Generator
 import pytest
 from flask import Flask
 from flask.testing import FlaskClient
@@ -15,8 +15,7 @@ def app() -> Generator[Flask, None, None]:
         user = User(email='test@example.com')
         db.session.add(user)
         db.session.commit()
-        # workspace_id is implicitly assigned via relationship if set up, 
-        # or we must pass the user.id explicitly if that's the FK
+        # Assuming model definitions require explicit initialization
         ws = Workspace(name='Test Workspace', user_id=user.id)
         db.session.add(ws)
         db.session.commit()
