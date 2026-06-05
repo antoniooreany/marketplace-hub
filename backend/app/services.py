@@ -1,4 +1,5 @@
-from app.models import Product, Subscription, db
+from app.extensions import db
+from app.models import Product, Subscription
 
 class PlanLimitError(Exception): pass
 
