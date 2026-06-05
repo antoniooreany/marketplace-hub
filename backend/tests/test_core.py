@@ -1,8 +1,10 @@
 from typing import Any
 import pytest
+from flask import Flask
 from flask.testing import FlaskClient
 from app.models import Integration, SyncJob, Subscription
 from app.extensions import db
+from app.core_services import CoreService, PlanLimitError
 
 @pytest.fixture
 def setup_core_data():
@@ -19,6 +21,25 @@ def test_get_integrations(client: FlaskClient, setup_core_data) -> None:
     assert 'content' in data
     assert len(data['content']) == 1
     assert data['content'][0]['platform'] == 'Amazon'
+
+def test_integration_limit(app: Flask) -> None:
+    with app.app_context():
+        # Setup Free plan
+        sub = Subscription(plan='Free', workspace_id=1)
+        db.session.add(sub)
+        db.session.commit()
+        # Add first integration
+        CoreService.create_integration(platform='eBay', workspace_id=1)
+        
+        # Should fail on 2nd
+        with pytest.raises(PlanLimitError):
+            CoreService.create_integration(platform='Shopify', workspace_id=1)
+
+def test_webhook_persistence(app: Flask) -> None:
+    with app.app_context():
+        event = CoreService.create_webhook_event(event_type='test', payload={'data': 'val'}, workspace_id=1, correlation_id='corr-1')
+        assert event.id is not None
+        assert event.correlation_id == 'corr-1'
 
 def test_get_sync_jobs(client: FlaskClient, setup_core_data) -> None:
     response = client.get('/api/v1/sync-jobs')
