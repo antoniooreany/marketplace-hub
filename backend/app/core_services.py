@@ -3,7 +3,8 @@ from sqlalchemy import select
 from app.models import Integration, Product, SyncJob, Subscription, WebhookEvent
 from app.extensions import db
 from .exceptions import PlanLimitError
-from typing import NotRequired, TypedDict, cast # Needed for ProductCreateData
+from typing import NotRequired, TypedDict, cast # Needed for ProductCreateData, and cast for explicit casting
+
 
 class ProductCreateData(TypedDict): # Moved from services.py
     title: str
@@ -27,9 +28,22 @@ class AppService: # Renamed from CoreService
             if count >= 20:
                 raise PlanLimitError('Free plan limit reached')
 
-        # Remove workspace_id from data if present to avoid duplication
-        filtered_data = {k: v for k, v in data.items() if k != 'workspace_id'}
-        product: Product = Product(**filtered_data, workspace_id=workspace_id)
+        # Explicitly extract and cast arguments for Product constructor
+        # This resolves Pyright 'object' to 'str' assignment errors
+        title = cast(str, data['title'])
+        sku = cast(str, data['sku'])
+        price = cast(float, data['price'])
+        quantity = cast(int, data.get('quantity', 0))
+        status = cast(str, data.get('status', 'active'))
+
+        product: Product = Product(
+            title=title,
+            sku=sku,
+            price=price,
+            workspace_id=workspace_id,
+            quantity=quantity,
+            status=status
+        )
         db.session.add(instance=product)
         db.session.commit()
         return product
@@ -41,13 +55,13 @@ class AppService: # Renamed from CoreService
 
     @staticmethod
     def create_integration(platform: str, workspace_id: int) -> Integration:
-        sub = AppService.get_subscription(workspace_id) # Call self
+        sub: Subscription | None = AppService.get_subscription(workspace_id) # Call self
         if sub and sub.plan == 'Free':
-            count = len(AppService.get_integrations(workspace_id)) # Call self
+            count: int = len(AppService.get_integrations(workspace_id)) # Call self
             if count >= 1:
                 raise PlanLimitError('Free plan integration limit reached')
 
-        integration = Integration(platform=platform, workspace_id=workspace_id)
+        integration: Integration = Integration(platform=platform, workspace_id=workspace_id)
         db.session.add(instance=integration)
         db.session.commit()
         return integration
