@@ -13,7 +13,8 @@ def create_app(config_class: str = 'app.config.Config') -> Flask:
     migrate.init_app(app=app, db=db)
 
     # Register blueprints
-    from .api.v1.blueprint import api_v1_bp
+    from .api.v1.api_v1 import api_v1_bp
+    # from .api.v1 import health
     from .api.v1.products import products_bp
     from .api.v1.core import core_bp
     
