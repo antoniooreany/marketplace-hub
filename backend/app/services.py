@@ -1,12 +1,13 @@
+from typing import cast
+
 from app.extensions import db
 from app.models import Product, Subscription
-
 class PlanLimitError(Exception): pass
 
 class ProductService:
     @staticmethod
-    def get_all_products(workspace_id):
-        return Product.query.filter_by(workspace_id=workspace_id).all()
+    def get_all_products(workspace_id: int) -> list[Product]:
+        return cast(list[Product], Product.query.filter_by(workspace_id=workspace_id).all())
 
     @staticmethod
     def create_product(data, workspace_id):
