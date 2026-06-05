@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Link, NavLink } from 'react-router-dom';
 import './index.css';
+import { ProductsPage } from './pages/ProductsPage';
 
 const Layout = ({ children }: { children: React.ReactNode }) => (
   <div className="layout">
@@ -35,7 +36,7 @@ function App() {
       <Layout>
         <Routes>
           <Route path="/" element={<Placeholder title="Dashboard" />} />
-          <Route path="/products" element={<Placeholder title="Products" />} />
+          <Route path="/products" element={<ProductsPage />} />
           <Route path="/integrations" element={<Placeholder title="Integrations" />} />
           <Route path="/sync-jobs" element={<Placeholder title="Sync Jobs" />} />
           <Route path="/webhooks" element={<Placeholder title="Webhooks" />} />
