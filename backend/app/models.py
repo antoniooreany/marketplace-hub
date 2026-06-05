@@ -18,6 +18,23 @@ class Product(db.Model):
     status = db.Column(db.String(20), default='active')
     workspace_id = db.Column(db.Integer, db.ForeignKey('workspace.id'), nullable=False)
 
+    def __init__(
+        self,
+        *,
+        title: str,
+        sku: str,
+        price: float,
+        workspace_id: int,
+        quantity: int = 0,
+        status: str = 'active',
+    ) -> None:
+        self.title = title
+        self.sku = sku
+        self.price = price
+        self.workspace_id = workspace_id
+        self.quantity = quantity
+        self.status = status
+
 class Integration(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     platform = db.Column(db.String(50), nullable=False)
