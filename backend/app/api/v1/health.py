@@ -1,5 +1,4 @@
-from flask.wrappers import Response
-from flask import jsonify
+from flask import Response, jsonify
 from .blueprint import api_v1_bp
 
 @api_v1_bp.route(rule='/health', methods=['GET'])
