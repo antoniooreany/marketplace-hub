@@ -1,5 +1,6 @@
+from typing import cast
 from flask import Blueprint, jsonify, request
-from app.services import ProductService
+from app.services import ProductService, ProductCreateData
 
 products_bp = Blueprint('products', __name__)
 
@@ -11,6 +12,6 @@ def get_products():
 
 @products_bp.route('/', methods=['POST'])
 def create_product():
-    data = request.json
+    data = cast(ProductCreateData, request.json)
     product = ProductService.create_product(data, 1)
     return jsonify({'id': product.id}), 201
