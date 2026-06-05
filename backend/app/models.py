@@ -64,6 +64,19 @@ class SyncJob(db.Model):
     correlation_id: Mapped[str | None] = mapped_column(String(length=100), nullable=True)
     updated_at: Mapped[datetime] = mapped_column(default=func.now(), onupdate=func.now())
 
+    def __init__(
+        self,
+        *,
+        status: str,
+        workspace_id: int,
+        last_error: str | None = None,
+        correlation_id: str | None = None,
+    ) -> None:
+        self.status = status
+        self.workspace_id = workspace_id
+        self.last_error = last_error
+        self.correlation_id = correlation_id
+
 class Subscription(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     plan: Mapped[str] = mapped_column(String(length=20), default='Free')
