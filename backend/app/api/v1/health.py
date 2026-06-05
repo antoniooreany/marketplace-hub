@@ -1,5 +1,5 @@
 from flask import Response, jsonify
-from .blueprint import api_v1_bp
+from .api_v1 import api_v1_bp
 
 @api_v1_bp.route(rule='/health', methods=['GET'])
 def health_check() -> tuple[Response, int]:
