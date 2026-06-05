@@ -18,7 +18,7 @@ class AppService: # Renamed from CoreService
     @staticmethod
     def get_all_products(workspace_id: int) -> list[Product]: # Moved from ProductService
         stmt: Select[tuple[Product]] = select(Product).filter_by(workspace_id=workspace_id)
-        return list(db.session.scalars(stmt).all())
+        return list[Product](db.session.scalars(stmt).all())
 
     @staticmethod
     def create_product(data: ProductCreateData, workspace_id: int) -> Product: # Moved from ProductService
@@ -32,9 +32,9 @@ class AppService: # Renamed from CoreService
         # This resolves Pyright 'object' to 'str' assignment errors
         title: str = data['title']
         sku: str = data['sku']
-        price: float = cast(float, data['price'])
-        quantity: int = cast(int, data.get('quantity', 0))
-        status: str = cast(str, data.get('status', 'active'))
+        price: float = data['price']
+        quantity: int = data.get('quantity', 0)
+        status: str = data.get('status', 'active')
 
         product: Product = Product(
             title=title,
@@ -51,7 +51,7 @@ class AppService: # Renamed from CoreService
     @staticmethod
     def get_integrations(workspace_id: int) -> list[Integration]:
         stmt: Select[tuple[Integration]] = select(Integration).filter_by(workspace_id=workspace_id)
-        return list(db.session.scalars(stmt).all())
+        return list[Integration](db.session.scalars(stmt).all())
 
     @staticmethod
     def create_integration(platform: str, workspace_id: int) -> Integration:
@@ -69,7 +69,7 @@ class AppService: # Renamed from CoreService
     @staticmethod
     def get_sync_jobs(workspace_id: int) -> list[SyncJob]:
         stmt: Select[tuple[SyncJob]] = select(SyncJob).filter_by(workspace_id=workspace_id)
-        return list(db.session.scalars(stmt).all())
+        return list[SyncJob](db.session.scalars(stmt).all())
 
     @staticmethod
     def get_subscription(workspace_id: int) -> Subscription | None:
@@ -79,7 +79,7 @@ class AppService: # Renamed from CoreService
     @staticmethod
     def get_webhook_events(workspace_id: int) -> list[WebhookEvent]:
         stmt: Select[tuple[WebhookEvent]] = select(WebhookEvent).filter_by(workspace_id=workspace_id)
-        return list(db.session.scalars(stmt).all())
+        return list[WebhookEvent](db.session.scalars(stmt).all())
 
     @staticmethod
     def create_webhook_event(event_type: str, payload: dict[str, object], workspace_id: int, correlation_id: str | None = None) -> WebhookEvent:
