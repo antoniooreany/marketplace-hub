@@ -1,9 +1,10 @@
-# from flask.app import Flask
 from flask import Flask
 from flask_cors import CORS
+
 from .extensions import db, migrate
 
-def create_app(config_class: str = 'app.config.Config') -> Flask:
+
+def create_app(config_class: str = "app.config.Config") -> Flask:
     app: Flask = Flask(import_name=__name__)
     app.config.from_object(obj=config_class)
 
@@ -14,13 +15,12 @@ def create_app(config_class: str = 'app.config.Config') -> Flask:
 
     # Register blueprints
     from .api.v1.api_v1 import api_v1_bp
-    # from .api.v1 import health
-    from .api.v1.products import products_bp
     from .api.v1.core import core_bp
-    
-    app.register_blueprint(blueprint=api_v1_bp, url_prefix='/api/v1')
-    app.register_blueprint(blueprint=products_bp, url_prefix='/api/v1/products')
-    app.register_blueprint(blueprint=core_bp, url_prefix='/api/v1')
+    from .api.v1.products import products_bp
+
+    app.register_blueprint(blueprint=api_v1_bp, url_prefix="/api/v1")
+    app.register_blueprint(blueprint=products_bp, url_prefix="/api/v1/products")
+    app.register_blueprint(blueprint=core_bp, url_prefix="/api/v1")
 
     # Placeholder for other modules
     # app.register_blueprint(auth_bp, url_prefix='/api/v1/auth')

@@ -1,1 +1,2 @@
-class PlanLimitError(Exception): pass
+class PlanLimitError(Exception):
+    pass
