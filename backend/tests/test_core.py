@@ -1,8 +1,10 @@
-from typing import Any
+from werkzeug.test import TestResponse
+
+
 import pytest
 from flask import Flask
 from flask.testing import FlaskClient
-from app.models import Integration, SyncJob, Subscription
+from app.models import Integration, SyncJob, Subscription, WebhookEvent
 from app.extensions import db
 from app.core_services import AppService # Updated import
 from app.exceptions import PlanLimitError # Updated import
@@ -16,7 +18,7 @@ def setup_core_data():
     db.session.commit()
 
 def test_get_integrations(client: FlaskClient, setup_core_data) -> None:
-    response = client.get('/api/v1/integrations')
+    response: TestResponse = client.get('/api/v1/integrations')
     assert response.status_code == 200
     data = response.get_json()
     assert 'content' in data
@@ -26,8 +28,8 @@ def test_get_integrations(client: FlaskClient, setup_core_data) -> None:
 def test_integration_limit(app: Flask) -> None:
     with app.app_context():
         # Setup Free plan
-        sub = Subscription(plan='Free', workspace_id=1)
-        db.session.add(sub)
+        sub: Subscription = Subscription(plan='Free', workspace_id=1)
+        db.session.add(instance=sub)
         db.session.commit()
         # Add first integration
         AppService.create_integration(platform='eBay', workspace_id=1)
@@ -38,12 +40,12 @@ def test_integration_limit(app: Flask) -> None:
 
 def test_webhook_persistence(app: Flask) -> None:
     with app.app_context():
-        event = AppService.create_webhook_event(event_type='test', payload={'data': 'val'}, workspace_id=1, correlation_id='corr-1')
+        event: WebhookEvent = AppService.create_webhook_event(event_type='test', payload={'data': 'val'}, workspace_id=1, correlation_id='corr-1')
         assert event.id is not None
         assert event.correlation_id == 'corr-1'
 
 def test_get_sync_jobs(client: FlaskClient, setup_core_data) -> None:
-    response = client.get('/api/v1/sync-jobs')
+    response: TestResponse = client.get('/api/v1/sync-jobs')
     assert response.status_code == 200
     data = response.get_json()
     assert 'content' in data
@@ -51,7 +53,7 @@ def test_get_sync_jobs(client: FlaskClient, setup_core_data) -> None:
     assert data['content'][0]['status'] == 'success'
 
 def test_get_subscription(client: FlaskClient, setup_core_data) -> None:
-    response = client.get('/api/v1/subscription')
+    response: TestResponse = client.get('/api/v1/subscription')
     assert response.status_code == 200
     data = response.get_json()
     assert 'content' in data

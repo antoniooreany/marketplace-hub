@@ -82,6 +82,10 @@ class Subscription(db.Model):
     plan: Mapped[str] = mapped_column(String(length=20), default='Free')
     workspace_id: Mapped[int] = mapped_column(ForeignKey(column='workspace.id'), nullable=False)
 
+    def __init__(self, *, plan: str = 'Free', workspace_id: int) -> None:
+        self.plan = plan
+        self.workspace_id = workspace_id
+
 class WebhookEvent(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     event_type: Mapped[str] = mapped_column(String(length=50), nullable=False)
