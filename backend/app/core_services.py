@@ -30,11 +30,11 @@ class AppService: # Renamed from CoreService
 
         # Explicitly extract and cast arguments for Product constructor
         # This resolves Pyright 'object' to 'str' assignment errors
-        title = cast(str, data['title'])
-        sku = cast(str, data['sku'])
-        price = cast(float, data['price'])
-        quantity = cast(int, data.get('quantity', 0))
-        status = cast(str, data.get('status', 'active'))
+        title: str = data['title']
+        sku: str = data['sku']
+        price: float = cast(float, data['price'])
+        quantity: int = cast(int, data.get('quantity', 0))
+        status: str = cast(str, data.get('status', 'active'))
 
         product: Product = Product(
             title=title,
