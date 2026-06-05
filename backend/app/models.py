@@ -47,6 +47,10 @@ class Integration(db.Model):
     platform: Mapped[str] = mapped_column(String(length=50), nullable=False)
     workspace_id: Mapped[int] = mapped_column(ForeignKey(column='workspace.id'), nullable=False)
 
+    def __init__(self, *, platform: str, workspace_id: int) -> None:
+        self.platform = platform
+        self.workspace_id = workspace_id
+
 class SyncJob(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     status: Mapped[str] = mapped_column(String(length=20), nullable=False)
