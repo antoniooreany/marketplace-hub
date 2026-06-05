@@ -1,18 +1,23 @@
 from datetime import datetime
-
 from sqlalchemy import JSON, Float, ForeignKey, String, func
 from sqlalchemy.orm import Mapped, mapped_column
-
 from app.extensions import db
 
 class User(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     email: Mapped[str] = mapped_column(String(length=120), unique=True, nullable=False)
 
+    def __init__(self, *, email: str) -> None:
+        self.email = email
+
 class Workspace(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(length=100), nullable=False)
     user_id: Mapped[int] = mapped_column(ForeignKey(column='user.id'), nullable=False)
+
+    def __init__(self, *, name: str, user_id: int) -> None:
+        self.name = name
+        self.user_id = user_id
 
 class Product(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
