@@ -1,18 +1,15 @@
-import os
 from flask import Flask
 from flask_cors import CORS
 from .extensions import db, migrate
 
-def create_app(config_class='app.config.Config'):
+def create_app(config_class: str = 'app.config.Config'):
     app = Flask(__name__)
     app.config.from_object(config_class)
 
     # Initialize extensions
-    CORS(app)
+    _ = CORS(app)
     db.init_app(app)
     migrate.init_app(app, db)
-
-    from app import models
 
     # Register blueprints
     from .api.v1 import api_v1_bp
