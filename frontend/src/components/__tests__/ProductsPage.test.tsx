@@ -8,7 +8,7 @@ vi.mock('../../api/api', () => ({
 }));
 
 test('renders products', async () => {
-  vi.mocked(api.apiFetch).mockResolvedValue([{ id: 1, title: 'Test Product', sku: 'SKU1' }]);
+  vi.mocked(api.apiFetch).mockResolvedValue({ content: [{ id: 1, title: 'Test Product', sku: 'SKU1' }] });
   
   render(<ProductsPage />);
   await waitFor(() => {
