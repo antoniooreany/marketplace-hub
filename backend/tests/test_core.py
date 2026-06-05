@@ -4,7 +4,8 @@ from flask import Flask
 from flask.testing import FlaskClient
 from app.models import Integration, SyncJob, Subscription
 from app.extensions import db
-from app.core_services import CoreService, PlanLimitError
+from app.core_services import AppService # Updated import
+from app.exceptions import PlanLimitError # Updated import
 
 @pytest.fixture
 def setup_core_data():
@@ -29,15 +30,15 @@ def test_integration_limit(app: Flask) -> None:
         db.session.add(sub)
         db.session.commit()
         # Add first integration
-        CoreService.create_integration(platform='eBay', workspace_id=1)
+        AppService.create_integration(platform='eBay', workspace_id=1)
         
         # Should fail on 2nd
         with pytest.raises(PlanLimitError):
-            CoreService.create_integration(platform='Shopify', workspace_id=1)
+            AppService.create_integration(platform='Shopify', workspace_id=1)
 
 def test_webhook_persistence(app: Flask) -> None:
     with app.app_context():
-        event = CoreService.create_webhook_event(event_type='test', payload={'data': 'val'}, workspace_id=1, correlation_id='corr-1')
+        event = AppService.create_webhook_event(event_type='test', payload={'data': 'val'}, workspace_id=1, correlation_id='corr-1')
         assert event.id is not None
         assert event.correlation_id == 'corr-1'
 
