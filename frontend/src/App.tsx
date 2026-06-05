@@ -1,6 +1,9 @@
 import { BrowserRouter as Router, Routes, Route, Link, NavLink } from 'react-router-dom';
 import './index.css';
 import { ProductsPage } from './pages/ProductsPage';
+import { BillingPage } from './pages/BillingPage';
+import { WebhooksPage } from './pages/WebhooksPage';
+import { DebugOpsPage } from './pages/DebugOpsPage';
 
 const Layout = ({ children }: { children: React.ReactNode }) => (
   <div className="layout">
@@ -39,9 +42,9 @@ function App() {
           <Route path="/products" element={<ProductsPage />} />
           <Route path="/integrations" element={<Placeholder title="Integrations" />} />
           <Route path="/sync-jobs" element={<Placeholder title="Sync Jobs" />} />
-          <Route path="/webhooks" element={<Placeholder title="Webhooks" />} />
-          <Route path="/billing" element={<Placeholder title="Billing" />} />
-          <Route path="/debug-ops" element={<Placeholder title="Debug & Ops" />} />
+          <Route path="/webhooks" element={<WebhooksPage />} />
+          <Route path="/billing" element={<BillingPage />} />
+          <Route path="/debug-ops" element={<DebugOpsPage />} />
           <Route path="/settings" element={<Placeholder title="Settings" />} />
           <Route path="/login" element={<Placeholder title="Login" />} />
           <Route path="*" element={<Placeholder title="404 - Not Found" />} />
