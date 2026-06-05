@@ -27,6 +27,9 @@ class SyncJob(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     status = db.Column(db.String(20), nullable=False)
     workspace_id = db.Column(db.Integer, db.ForeignKey('workspace.id'), nullable=False)
+    last_error = db.Column(db.String(500), nullable=True)
+    correlation_id = db.Column(db.String(100), nullable=True)
+    updated_at = db.Column(db.DateTime, default=db.func.now(), onupdate=db.func.now())
 
 class Subscription(db.Model):
     id = db.Column(db.Integer, primary_key=True)
