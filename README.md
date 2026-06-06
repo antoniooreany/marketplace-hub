@@ -1,37 +1,37 @@
 # Marketplace Hub Lite
 
-Marketplace Hub Lite — это полнофункциональное демо-приложение (SaaS), имитирующее панель управления мерчанта для управления продуктами и интеграциями с маркетплейсами.
+Marketplace Hub Lite is a production-minded, portfolio-ready full-stack SaaS demo, simulating a merchant dashboard for managing products across multiple e-commerce marketplaces.
 
-## 🚀 Возможности
-- **Управление продуктами:** CRUD-операции с валидацией планов подписки.
-- **Интеграции:** Имитация подключения к Amazon, eBay, Shopify, Wix.
-- **Синхронизация:** Фоновые задачи с отслеживанием статусов и логами ошибок.
-- **Вебхуки:** Система приема и аудита событий от маркетплейсов.
-- **Отладка:** Инструментарий для отслеживания ошибок (correlation IDs).
+## 🚀 Features
+- **Product Management:** CRUD operations with subscription plan validation.
+- **Marketplace Integrations:** Mock connectors for Amazon, eBay, Shopify, and Wix.
+- **Sync Workflow:** Background task handling with status observability and error logging.
+- **Webhooks:** System for ingestion and audit logging of marketplace events.
+- **Debugging & Ops:** Observability tooling with correlation IDs for tracing.
 
-## 🛠 Технологический стек
-- **Backend:** Python, Flask, SQLAlchemy, Alembic.
+## 🛠 Tech Stack
+- **Backend:** Python, Flask (App Factory pattern), SQLAlchemy (ORM), Alembic (Migrations).
 - **Frontend:** React, TypeScript, Vite.
 - **DevOps:** Docker, Docker Compose, GitHub Actions.
 
-## 📦 Быстрый старт
-1. Убедитесь, что у вас установлен Docker.
-2. Клонируйте репозиторий.
-3. Запустите проект:
+## 📦 Quick Start
+1. Ensure Docker is installed.
+2. Clone the repository.
+3. Start the project:
    ```bash
    docker-compose up --build
    ```
-4. Наполните базу данных демо-данными:
+4. Seed the database with demo data:
    ```bash
    docker-compose exec backend python seed.py
    ```
 
-## 🧪 Тестирование
-Проект включает автоматизированное тестирование:
+## 🧪 Testing
+The project includes automated testing:
 - **Backend:** `pytest backend/tests`
-- **Frontend:** `npm test` (через Vitest)
+- **Frontend:** `npm test` (via Vitest)
 
-## 🏗 Архитектурные решения
-- **App Factory Pattern:** Использован для масштабируемости и чистоты кода.
-- **Service Layer:** Бизнес-логика вынесена из API-маршрутов в сервисный слой (`AppService`).
-- **Strict Typing:** Проект использует типизацию (SQLAlchemy Mapped, TypedDict) для статического анализа и повышения надежности кода.
+## 🏗 Architecture
+- **App Factory Pattern:** Used for scalability and code cleanliness.
+- **Service Layer:** Business logic is decoupled from API routes into a centralized `AppService` layer.
+- **Strict Typing:** Uses type hints (SQLAlchemy Mapped, TypedDict) for static analysis, improving code reliability and maintainability.
